@@ -70,25 +70,29 @@ const ParticleSystem = () => {
     points.current.rotation.y = time * 0.05;
   });
 
-  return (
-    <points ref={points}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={particleCount}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
-      <pointsMaterial
-        size={0.035}
-        color="#d4af37"
-        transparent
-        opacity={0.6}
-        sizeAttenuation={true}
-        blending={THREE.AdditiveBlending}
-      />
-    </points>
+  // Use React.createElement to bypass TypeScript intrinsic element errors for Three.js tags
+  // when the environment does not correctly extend the JSX namespace globally.
+  return React.createElement(
+    'points',
+    { ref: points },
+    React.createElement(
+      'bufferGeometry',
+      null,
+      React.createElement('bufferAttribute', {
+        attach: "attributes-position",
+        count: particleCount,
+        array: positions,
+        itemSize: 3,
+      })
+    ),
+    React.createElement('pointsMaterial', {
+      size: 0.035,
+      color: "#d4af37",
+      transparent: true,
+      opacity: 0.6,
+      sizeAttenuation: true,
+      blending: THREE.AdditiveBlending,
+    })
   );
 };
 
